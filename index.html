@@ -99,6 +99,14 @@
       word-break: break-word;
       box-shadow: 0 2px 8px rgba(52,103,155,0.07);
       min-height: 48px;
+      animation: fadeInTask 0.5s cubic-bezier(.39,.58,.57,1.01);
+      transition: box-shadow 0.25s, background 0.25s, transform 0.18s;
+    }
+
+    li:hover {
+      box-shadow: 0 6px 24px #5dade2a0;
+      background: #eaf6fd;
+      transform: translateY(-2px) scale(1.01);
     }
 
     /* Checkbox personalizado */
@@ -214,8 +222,49 @@
 
     .task-actions {
       display: flex;
-      gap: 1cm;
+      gap: 1.5cm;
       align-items: center;
+      justify-content: center;
+      background: rgba(159, 177, 235, 0.85);
+      border-radius: 8px;
+      box-shadow: 0 4px 18px 0 rgba(52,103,155,0.13), 0 1.5px 8px rgba(52,103,155,0.10);
+      padding: 8px 18px;
+      margin-top: 8px;
+      transition: box-shadow 0.25s;
+    }
+    .task-actions:hover {
+      box-shadow: 0 8px 32px 0 rgba(52,103,155,0.18), 0 2px 12px rgba(52,103,155,0.13);
+    }
+    .task-action-edit, .task-action-delete {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 65px;
+      padding: 8px 0;
+      font-size: 0.98rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .task-action-edit {
+      background: none;
+      color: #34679b;
+      border-right: none;
+    }
+    .task-action-edit:hover {
+      background: none;
+      color: #2980b9;
+    }
+    .task-action-delete {
+      background: none;
+      color: #e74c3c;
+      white-space: nowrap;
+      /* Evita saltos de línea en el texto del botón */
+    }
+    .task-action-delete:hover {
+      background: none;
+      color: #c0392b;
     }
 
     /* Media Queries para diseño responsivo */
@@ -252,6 +301,156 @@
         gap: 0.5cm;
       }
     }
+
+    /* Fecha y hora elegante debajo del texto de la tarea */
+    .task-date-elegant {
+      font-size: 0.93rem;
+      color: #5dade2;
+      margin: 2px 0 0 0;
+      font-style: italic;
+      letter-spacing: 0.01em;
+      background: rgba(255,255,255,0.7);
+      border-radius: 6px;
+      padding: 2px 10px 2px 6px;
+      display: inline-block;
+      box-shadow: 0 1px 4px rgba(52,103,155,0.07);
+    }
+
+    .calendar-btn {
+      margin: 18px auto 0 auto;
+      display: block;
+      background: #5dade2;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 24px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+      width: fit-content;
+      position: relative;
+      overflow: hidden;
+    }
+    .calendar-btn::after {
+      content: '';
+      position: absolute;
+      left: -60%;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.01) 100%);
+      transform: skewX(-20deg);
+      transition: left 0.5s cubic-bezier(.39,.58,.57,1.01);
+      pointer-events: none;
+    }
+    .calendar-btn:hover::after {
+      left: 120%;
+    }
+
+    /* Animaciones y transiciones para botones */
+    button, .calendar-btn, .task-action-edit, .task-action-delete {
+      transition: background 0.25s, color 0.25s, box-shadow 0.25s, transform 0.18s;
+    }
+    button:active, .calendar-btn:active, .task-action-edit:active, .task-action-delete:active {
+      transform: scale(0.96) rotate(-1deg);
+      box-shadow: 0 2px 8px #5dade2a0;
+    }
+    button:hover, .calendar-btn:hover, .task-action-edit:hover, .task-action-delete:hover {
+      box-shadow: 0 6px 18px #f8f8f8a0, 0 1.5px 8px #5dade280;
+      filter: brightness(1.08);
+    }
+
+    /* Animación de aparición para el contenedor principal */
+    .container {
+      animation: fadeInContainer 0.7s cubic-bezier(.39,.58,.57,1.01);
+    }
+    @keyframes fadeInContainer {
+      from { opacity: 0; transform: scale(0.97) translateY(30px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Calendario de tareas integrado */
+    .calendar-container {
+      background: #111;
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(52,103,155,0.13);
+      max-width: 600px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 32px 28px 24px 28px;
+    }
+    .task-calendar-list {
+      margin-top: 24px;
+    }
+    .task-calendar-item {
+      background: #e3f0fa;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      padding: 18px 16px 14px 16px;
+      box-shadow: 0 2px 8px rgba(52,103,155,0.07);
+    }
+    .task-title {
+      font-size: 1.08rem;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 6px;
+    }
+    .task-date {
+      color: #5dade2;
+      font-size: 0.98rem;
+      margin-bottom: 8px;
+    }
+    .calendar-row {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 8px;
+    }
+    .calendar-container label {
+      font-weight: 500;
+      color: #34679b;
+    }
+    .calendar-container input[type="date"] {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1.5px solid #a8c0cc;
+      font-size: 1rem;
+      background: #f7fafc;
+      color: #2c3e50;
+    }
+    @media (max-width: 700px) {
+      .calendar-container {
+        max-width: 98vw;
+        padding: 16px 2vw;
+      }
+    }
+
+    /* Estilos para el calendario integrado */
+    .calendar-container {
+      margin-top: 40px;
+    }
+    .calendar-container h1 {
+      font-size: 1.5rem;
+      margin-bottom: 18px;
+      color: #34679b;
+      text-align: center;
+    }
+    .back-btn {
+      background: #5dade2;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      display: block;
+      margin: 0 auto 18px auto;
+    }
+    .back-btn:hover {
+      background: #3498db;
+    }
   </style>
 </head>
 <body>
@@ -270,8 +469,19 @@
 
       <input type="text" id="taskInput" placeholder="Nueva tarea..." />
       <button id="addTaskBtn">Agregar Tarea</button>
+      <button id="calendarBtn" class="calendar-btn" onclick="window.location.href='calendario.html'">Calendario</button>
 
       <ul id="taskList"></ul>
+
+      <!-- Calendario de tareas integrado -->
+      <div id="calendarSection" class="hidden">
+        <div class="calendar-container" id="calendarContainerIntegrated" style="margin-top:40px;">
+          <button class="back-btn" onclick="window.location.href='index.html#taskInput'">Volver a tareas</button>
+          <h1>Calendario de Tareas</h1>
+          <div id="calendarList" class="task-calendar-list"></div>
+        </div>
+        <button id="closeCalendarBtn" class="calendar-btn" style="margin-top:24px; background:#e74c3c;">Cerrar Calendario</button>
+      </div>
     </div>
     
   </div>
@@ -287,6 +497,11 @@
     const taskInput = document.getElementById('taskInput');
     const addTaskBtn = document.getElementById('addTaskBtn');
     const taskList = document.getElementById('taskList');
+    const calendarBtn = document.getElementById('calendarBtn');
+
+    const calendarSectionEl = document.getElementById('calendarSection');
+    const calendarTasks = document.getElementById('calendarTasks');
+    const closeCalendarBtn = document.getElementById('closeCalendarBtn');
 
     let tasks = [];
 
@@ -314,23 +529,35 @@
         const li = document.createElement('li');
 
         const span = document.createElement('span');
-        span.textContent = task;
+        if (typeof task === 'string') {
+          // Migración para tareas antiguas
+          task = { text: task, createdAt: null };
+        }
+        span.textContent = task.text || task;
         span.className = 'task-text';
         li.appendChild(span);
+
+        // Fecha y hora elegante
+        const dateDiv = document.createElement('div');
+        if (task.createdAt) {
+          dateDiv.textContent = `🕒 ${task.createdAt}`;
+        }
+        dateDiv.className = 'task-date-elegant';
+        li.appendChild(dateDiv);
 
         // Contenedor para los botones
         const actions = document.createElement('div');
         actions.className = 'task-actions';
 
         const editBtn = document.createElement('button');
-        editBtn.textContent = 'Editar';
-        editBtn.className = 'edit';
+        editBtn.textContent = 'Editar ';
+        editBtn.className = 'task-action-edit';
         editBtn.onclick = () => editTask(index);
         actions.appendChild(editBtn);
 
         const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Eliminar';
-        deleteBtn.className = 'delete';
+        deleteBtn.textContent = 'Eliminar ';
+        deleteBtn.className = 'task-action-delete';
         deleteBtn.onclick = () => deleteTask(index);
         actions.appendChild(deleteBtn);
 
@@ -367,12 +594,14 @@
     }
 
     function addTask() {
-      const task = taskInput.value.trim();
-      if (task === '') {
+      const taskText = taskInput.value.trim();
+      if (taskText === '') {
         showCustomAlert('Por favor ingresa una tarea.');
         return;
       }
-      tasks.push(task);
+      const now = new Date();
+      const createdAt = now.toLocaleString();
+      tasks.push({ text: taskText, createdAt });
       taskInput.value = '';
       renderTasks();
     }
@@ -392,7 +621,7 @@
 
       const input = document.createElement('input');
       input.type = 'text';
-      input.value = tasks[index];
+      input.value = tasks[index].text || tasks[index];
       content.appendChild(input);
 
       const btns = document.createElement('div');
@@ -404,7 +633,11 @@
       saveBtn.onclick = () => {
         const newTask = input.value.trim();
         if (newTask) {
-          tasks[index] = newTask;
+          if (typeof tasks[index] === 'string') {
+            tasks[index] = { text: newTask, createdAt: null };
+          } else {
+            tasks[index].text = newTask;
+          }
           renderTasks();
         }
         document.body.removeChild(modal);
@@ -482,6 +715,169 @@
       if (e.key === 'Enter') {
         addTask();
       }
+    });
+
+    // --- Lógica de calendario integrada ---
+    function renderCalendarTasks() {
+      const calendarList = document.getElementById('calendarList');
+      if (!calendarList) return;
+      calendarList.innerHTML = '';
+      if (!tasks.length) {
+        calendarList.innerHTML = '<p style="text-align:center;color:#888;">No hay tareas registradas.</p>';
+        return;
+      }
+      tasks.forEach((task, idx) => {
+        const item = document.createElement('div');
+        item.className = 'task-calendar-item';
+        // Título
+        const title = document.createElement('div');
+        title.className = 'task-title';
+        title.textContent = task.text || task;
+        item.appendChild(title);
+        // Fecha de creación
+        const date = document.createElement('div');
+        date.className = 'task-date';
+        date.textContent = task.createdAt ? `Creada: ${task.createdAt}` : 'Sin fecha de creación';
+        item.appendChild(date);
+        // Rango de días editable
+        const calendarRow = document.createElement('div');
+        calendarRow.className = 'calendar-row';
+        const labelInicio = document.createElement('label');
+        labelInicio.textContent = 'Inicio:';
+        const inputInicio = document.createElement('input');
+        inputInicio.type = 'date';
+        // Si no hay rangeStart, usar la fecha de creación (formato yyyy-mm-dd)
+        let fechaCreacion = '';
+        if (task.createdAt) {
+          const d = new Date(task.createdAt);
+          if (!isNaN(d)) {
+            fechaCreacion = d.toISOString().slice(0, 10);
+          }
+        }
+        inputInicio.value = task.rangeStart || fechaCreacion;
+        inputInicio.onchange = (e) => {
+          tasks[idx].rangeStart = e.target.value;
+          saveTasks();
+          renderCalendarTasks();
+        };
+        const labelFin = document.createElement('label');
+        labelFin.textContent = 'Fin:';
+        const inputFin = document.createElement('input');
+        inputFin.type = 'date';
+        inputFin.value = task.rangeEnd || '';
+        inputFin.onchange = (e) => {
+          tasks[idx].rangeEnd = e.target.value;
+          saveTasks();
+          renderCalendarTasks();
+        };
+        calendarRow.appendChild(labelInicio);
+        calendarRow.appendChild(inputInicio);
+        calendarRow.appendChild(labelFin);
+        calendarRow.appendChild(inputFin);
+        item.appendChild(calendarRow);
+        calendarList.appendChild(item);
+      });
+    }
+    // Llama a renderCalendarTasks() cuando quieras mostrar el calendario integrado
+    // renderCalendarTasks();
+
+    // Renderizar tareas en el calendario
+    function renderCalendar() {
+      calendarTasks.innerHTML = '';
+      if (tasks.length === 0) {
+        calendarTasks.innerHTML = '<p style="text-align:center; color:#888;">No hay tareas para mostrar.</p>';
+        return;
+      }
+      tasks.forEach((task, idx) => {
+        const card = document.createElement('div');
+        card.style.background = '#f8fafc';
+        card.style.borderRadius = '10px';
+        card.style.boxShadow = '0 2px 8px #5dade220';
+        card.style.margin = '0 0 18px 0';
+        card.style.padding = '18px 18px 12px 18px';
+        card.style.position = 'relative';
+        card.style.transition = 'box-shadow 0.2s, transform 0.18s';
+        card.onmouseover = () => { card.style.boxShadow = '0 8px 24px #5dade2a0'; card.style.transform = 'scale(1.01)'; };
+        card.onmouseleave = () => { card.style.boxShadow = '0 2px 8px #5dade220'; card.style.transform = 'scale(1)'; };
+
+        const title = document.createElement('div');
+        title.textContent = task.text;
+        title.style.fontWeight = 'bold';
+        title.style.fontSize = '1.08rem';
+        title.style.color = '#34679b';
+        card.appendChild(title);
+
+        const created = document.createElement('div');
+        created.textContent = `Creada: ${task.createdAt || ''}`;
+        created.style.fontSize = '0.95rem';
+        created.style.color = '#5dade2';
+        created.style.margin = '6px 0 10px 0';
+        card.appendChild(created);
+
+        // Rango de fechas
+        const rangeDiv = document.createElement('div');
+        rangeDiv.style.display = 'flex';
+        rangeDiv.style.gap = '10px';
+        rangeDiv.style.alignItems = 'center';
+        rangeDiv.style.marginBottom = '8px';
+
+        const labelInicio = document.createElement('label');
+        labelInicio.textContent = 'Inicio:';
+        labelInicio.style.fontWeight = 'bold';
+        rangeDiv.appendChild(labelInicio);
+        const inputInicio = document.createElement('input');
+        inputInicio.type = 'date';
+        inputInicio.value = task.rangeStart || (task.createdAt ? formatDateForInput(task.createdAt) : '');
+        inputInicio.style.borderRadius = '6px';
+        inputInicio.style.border = '1.5px solid #a8c0cc';
+        inputInicio.style.padding = '4px 8px';
+        inputInicio.style.fontSize = '1rem';
+        rangeDiv.appendChild(inputInicio);
+
+        const labelFin = document.createElement('label');
+        labelFin.textContent = 'Fin:';
+        labelFin.style.fontWeight = 'bold';
+        rangeDiv.appendChild(labelFin);
+        const inputFin = document.createElement('input');
+        inputFin.type = 'date';
+        inputFin.value = task.rangeEnd || '';
+        inputFin.style.borderRadius = '6px';
+        inputFin.style.border = '1.5px solid #a8c0cc';
+        inputFin.style.padding = '4px 8px';
+        inputFin.style.fontSize = '1rem';
+        rangeDiv.appendChild(inputFin);
+
+        // Guardar cambios en el rango
+        inputInicio.onchange = () => {
+          task.rangeStart = inputInicio.value;
+          saveTasks();
+        };
+        inputFin.onchange = () => {
+          task.rangeEnd = inputFin.value;
+          saveTasks();
+        };
+
+        card.appendChild(rangeDiv);
+        calendarTasks.appendChild(card);
+      });
+    }
+
+    // Formatea fecha/hora local a yyyy-mm-dd para input date
+    function formatDateForInput(dateStr) {
+      const d = new Date(dateStr);
+      if (isNaN(d)) return '';
+      return d.toISOString().slice(0,10);
+    }
+
+    // Mostrar/ocultar calendario
+    calendarBtn.addEventListener('click', () => {
+      calendarSectionEl.classList.remove('hidden');
+      taskAppContainer.classList.add('hidden');
+      renderCalendar();
+    });
+    closeCalendarBtn.addEventListener('click', () => {
+      calendarSectionEl.classList.add('hidden');
+      taskAppContainer.classList.remove('hidden');
     });
 
     // Al cargar la página, cargar tareas guardadas
