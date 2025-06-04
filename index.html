@@ -3,886 +3,492 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Gestor de Tareas Personales</title>
+  <title>My Homework</title>
   <style>
-    /* Fuentes y contenedor principal */
+    :root {
+      --azul-oscuro: #0a2342;
+      --azul-medio: #185adb;
+      --azul-claro: #f3f8ff;
+      --blanco: #fff;
+      --sombra: 0 4px 16px rgba(24,90,219,0.12);
+      --gris: #e5e9f2;
+      --verde: #3ec300;
+      --rojo: #e74c3c;
+    }
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(230,240,243,0.85)), url('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80'); /* libros */
-      background-size: cover;
-      background-position: center;
-      color: #34495e;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
-      padding: 0 15px;
-    }
-
-    /* Fondo alternativo para paisajes en pantallas grandes */
-    @media (min-width: 900px) {
-      body {
-        background: linear-gradient(rgba(175, 179, 206, 0.85), rgba(230,240,243,0.85)), url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80'); /* paisaje */
-        background-size: cover;
-        background-position: center;
-      }
-    }
-
-    .container {
-      background: rgb(0, 0, 0);
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      max-width: 480px;
-      width: 100%;
-      min-height: 0;
-      padding: 30px 25px;
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-      font-weight: 700;
-      color: #34679b;
-    }
-
-    /* Input y botones */
-    input[type="text"] {
-      width: 100%;
-      padding: 12px 15px;
-      border: 2px solid #a8c0cc;
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: border-color 0.3s ease;
-      outline: none;
-      box-sizing: border-box;
-    }
-
-    input[type="text"]:focus {
-      border-color: #5dade2;
-    }
-
-    button {
-      margin-top: 12px;
-      background-color: #5dade2;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      width: 100%;
-    }
-
-    button:hover {
-      background-color: #3498db;
-    }
-
-    /* Lista de tareas */
-    ul {
-      list-style: none;
-      padding-left: 0;
-      margin-top: 25px;
-    }
-
-    li {
-      background: #dff1fb;
-      margin-bottom: 12px;
-      padding: 16px 18px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      color: #34495e;
-      font-weight: 500;
-      gap: 10px;
-      word-break: break-word;
-      box-shadow: 0 2px 8px rgba(52,103,155,0.07);
-      min-height: 48px;
-      animation: fadeInTask 0.5s cubic-bezier(.39,.58,.57,1.01);
-      transition: box-shadow 0.25s, background 0.25s, transform 0.18s;
-    }
-
-    li:hover {
-      box-shadow: 0 6px 24px #5dade2a0;
-      background: #eaf6fd;
-      transform: translateY(-2px) scale(1.01);
-    }
-
-    /* Checkbox personalizado */
-    .task-checkbox {
-      width: 20px;
-      height: 20px;
-      cursor: pointer;
-    }
-
-    /* Texto de la tarea */
-    .task-text {
-      flex-grow: 1;
-      margin-right: 0;
-      word-break: break-word;
-      white-space: pre-line;
-      font-size: 1.08rem;
-      line-height: 1.5;
-      color: #2c3e50;
-      padding-top: 2px;
-      font-weight: bold;
-    }
-
-    /* Estilo cuando está completada */
-    .task-completed {
-      text-decoration: line-through;
-      color: #7f8c8d;
-      opacity: 0.7;
-    }
-
-    button.edit, button.delete {
-      min-width: 60px;
-      padding: 6px 0;
-      font-size: 0.98rem;
-      background: transparent;
-      border: none;
-      color: #5dade2;
-      font-weight: 700;
-      cursor: pointer;
-      margin-left: 8px;
-      transition: color 0.3s ease;
-    }
-
-    button.edit:hover {
-      color: #2980b9;
-    }
-
-    button.delete {
-      color: #e74c3c;
-      white-space: nowrap;
-    }
-
-    button.delete:hover {
-      color: #c0392b;
-    }
-
-    /* Ocultar contenedores */
-    .hidden {
-      display: none;
-    }
-
-    /* Texto saludo */
-    #welcomeMsg {
-      font-size: 1.3rem;
-      text-align: center;
-      margin-bottom: 20px;
-      color: #34679b;
-      font-weight: 600;
-    }
-
-    /* Ventana de editar (prompt) personalizada */
-    .custom-edit-modal {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
+      background: linear-gradient(135deg, var(--azul-claro) 0%, var(--azul-medio) 100%);
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      color: var(--azul-oscuro);
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 9999;
     }
-    .custom-edit-content {
-      background: #111;
-      color: #fff;
-      padding: 32px 28px;
-      border-radius: 12px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
-      min-width: 320px;
-      max-width: 90vw;
+    .container {
+      background: var(--blanco);
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(10,35,66,0.18);
+      padding: 2.5rem 2rem 2rem 2rem;
+      max-width: 500px;
+      width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 18px;
-    }
-    .custom-edit-content input {
-      background: #222;
-      color: #fff;
-      border: 1.5px solid #444;
-      border-radius: 7px;
-      padding: 10px 12px;
-      font-size: 1rem;
-    }
-    .custom-edit-content button {
-      background: #5dade2;
-      color: #fff;
-      border: none;
-      border-radius: 7px;
-      padding: 10px 0;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-top: 8px;
-    }
-    .custom-edit-content button:hover {
-      background: #2980b9;
-    }
-
-    .task-actions {
-      display: flex;
-      gap: 1.5cm;
       align-items: center;
-      justify-content: center;
-      background: rgba(159, 177, 235, 0.85);
-      border-radius: 8px;
-      box-shadow: 0 4px 18px 0 rgba(52,103,155,0.13), 0 1.5px 8px rgba(52,103,155,0.10);
-      padding: 8px 18px;
-      margin-top: 8px;
-      transition: box-shadow 0.25s;
+      transition: box-shadow 0.2s;
     }
-    .task-actions:hover {
-      box-shadow: 0 8px 32px 0 rgba(52,103,155,0.18), 0 2px 12px rgba(52,103,155,0.13);
-    }
-    .task-action-edit, .task-action-delete {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 65px;
-      padding: 8px 0;
-      font-size: 0.98rem;
+    h1 {
+      margin-top: 0;
+      font-size: 2.2rem;
+      color: var(--azul-medio);
       font-weight: 700;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
+      letter-spacing: 1px;
     }
-    .task-action-edit {
-      background: none;
-      color: #34679b;
-      border-right: none;
-    }
-    .task-action-edit:hover {
-      background: none;
-      color: #2980b9;
-    }
-    .task-action-delete {
-      background: none;
-      color: #e74c3c;
-      white-space: nowrap;
-      /* Evita saltos de línea en el texto del botón */
-    }
-    .task-action-delete:hover {
-      background: none;
-      color: #c0392b;
-    }
-
-    /* Media Queries para diseño responsivo */
-    @media (max-width: 600px) {
-      .container {
-        max-width: 98vw;
-        padding: 18px 4vw;
-        min-width: 0;
-        border-radius: 0;
-        box-shadow: none;
-      }
-      h1 {
-        font-size: 1.2rem;
-      }
-      input[type="text"], button {
-        font-size: 1rem;
-        padding: 10px 8px;
-      }
-      .custom-edit-content {
-        min-width: 0;
-        width: 98vw;
-        padding: 18px 4vw;
-        border-radius: 0;
-      }
-      li {
-        padding: 10px 6px;
-        font-size: 0.98rem;
-        gap: 6px;
-      }
-      .task-text {
-        font-size: 1rem;
-      }
-      .task-actions {
-        gap: 0.5cm;
-      }
-    }
-
-    /* Fecha y hora elegante debajo del texto de la tarea */
-    .task-date-elegant {
-      font-size: 0.93rem;
-      color: #5dade2;
-      margin: 2px 0 0 0;
-      font-style: italic;
-      letter-spacing: 0.01em;
-      background: rgba(255,255,255,0.7);
-      border-radius: 6px;
-      padding: 2px 10px 2px 6px;
-      display: inline-block;
-      box-shadow: 0 1px 4px rgba(52,103,155,0.07);
-    }
-
-    .calendar-btn {
-      margin: 18px auto 0 auto;
-      display: block;
-      background: #5dade2;
-      color: #ffffff;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 24px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.2s;
-      width: fit-content;
-      position: relative;
-      overflow: hidden;
-    }
-    .calendar-btn::after {
-      content: '';
-      position: absolute;
-      left: -60%;
-      top: 0;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.01) 100%);
-      transform: skewX(-20deg);
-      transition: left 0.5s cubic-bezier(.39,.58,.57,1.01);
-      pointer-events: none;
-    }
-    .calendar-btn:hover::after {
-      left: 120%;
-    }
-
-    /* Animaciones y transiciones para botones */
-    button, .calendar-btn, .task-action-edit, .task-action-delete {
-      transition: background 0.25s, color 0.25s, box-shadow 0.25s, transform 0.18s;
-    }
-    button:active, .calendar-btn:active, .task-action-edit:active, .task-action-delete:active {
-      transform: scale(0.96) rotate(-1deg);
-      box-shadow: 0 2px 8px #5dade2a0;
-    }
-    button:hover, .calendar-btn:hover, .task-action-edit:hover, .task-action-delete:hover {
-      box-shadow: 0 6px 18px #f8f8f8a0, 0 1.5px 8px #5dade280;
-      filter: brightness(1.08);
-    }
-
-    /* Animación de aparición para el contenedor principal */
-    .container {
-      animation: fadeInContainer 0.7s cubic-bezier(.39,.58,.57,1.01);
-    }
-    @keyframes fadeInContainer {
-      from { opacity: 0; transform: scale(0.97) translateY(30px); }
-      to { opacity: 1; transform: scale(1) translateY(0); }
-    }
-
-    /* Calendario de tareas integrado */
-    .calendar-container {
-      background: #111;
-      border-radius: 14px;
-      box-shadow: 0 8px 24px rgba(52,103,155,0.13);
-      max-width: 600px;
-      width: 100%;
-      margin: 0 auto;
-      padding: 32px 28px 24px 28px;
-    }
-    .task-calendar-list {
-      margin-top: 24px;
-    }
-    .task-calendar-item {
-      background: #e3f0fa;
-      border-radius: 10px;
-      margin-bottom: 18px;
-      padding: 18px 16px 14px 16px;
-      box-shadow: 0 2px 8px rgba(52,103,155,0.07);
-    }
-    .task-title {
-      font-size: 1.08rem;
-      font-weight: bold;
-      color: #2c3e50;
-      margin-bottom: 6px;
-    }
-    .task-date {
-      color: #5dade2;
-      font-size: 0.98rem;
-      margin-bottom: 8px;
-    }
-    .calendar-row {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      margin-bottom: 8px;
-    }
-    .calendar-container label {
-      font-weight: 500;
-      color: #34679b;
-    }
-    .calendar-container input[type="date"] {
-      padding: 6px 10px;
-      border-radius: 6px;
-      border: 1.5px solid #a8c0cc;
-      font-size: 1rem;
-      background: #f7fafc;
-      color: #2c3e50;
-    }
-    @media (max-width: 700px) {
-      .calendar-container {
-        max-width: 98vw;
-        padding: 16px 2vw;
-      }
-    }
-
-    /* Estilos para el calendario integrado */
-    .calendar-container {
-      margin-top: 40px;
-    }
-    .calendar-container h1 {
-      font-size: 1.5rem;
-      margin-bottom: 18px;
-      color: #34679b;
+    .welcome {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      color: var(--azul-oscuro);
       text-align: center;
     }
-    .back-btn {
-      background: #5dade2;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 20px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s ease;
+    input[type="text"], input[type="date"] {
+      width: 100%;
       display: block;
-      margin: 0 auto 18px auto;
+      box-sizing: border-box;
+      padding: 0.8rem 1rem;
+      border: 1.5px solid var(--azul-medio);
+      border-radius: 10px;
+      font-size: 1rem;
+      margin-bottom: 1.2rem;
+      outline: none;
+      background: var(--azul-claro);
+      color: var(--azul-oscuro);
+      transition: border 0.2s;
     }
-    .back-btn:hover {
-      background: #3498db;
+    #userName {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    #startBtn {
+      width: 100%;
+      padding: 0.9rem 0;
+      background: var(--azul-medio);
+      color: var(--blanco);
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--sombra);
+      transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+      margin-bottom: 0.5rem;
+    }
+    input[type="text"]:focus, input[type="date"]:focus {
+      border: 2px solid var(--azul-oscuro);
+    }
+    button {
+      width: 100%;
+      padding: 0.9rem 0;
+      background: var(--azul-medio);
+      color: var(--blanco);
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--sombra);
+      transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+      margin-bottom: 0.5rem;
+    }
+    button:hover {
+      background: var(--azul-oscuro);
+      box-shadow: 0 8px 32px rgba(24,90,219,0.22);
+      transform: translateY(-2px) scale(1.03);
+    }
+    .greeting {
+      font-size: 1.3rem;
+      color: var(--azul-oscuro);
+      margin-top: 1.5rem;
+      text-align: center;
+      font-weight: 500;
+    }
+    .task-section {
+      width: 100%;
+      margin-top: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .task-form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      margin-bottom: 1.2rem;
+    }
+    .task-list {
+      width: 100%;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .task-item {
+      background: var(--azul-claro);
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(24,90,219,0.08);
+      margin-bottom: 0.7rem;
+      padding: 0.8rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: box-shadow 0.2s;
+    }
+    .task-item.completed {
+      background: #e6f9e6;
+      text-decoration: line-through;
+      color: #6c8a6b;
+    }
+    .task-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      flex: 1;
+    }
+    .task-title {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    .task-date {
+      font-size: 0.9rem;
+      color: #4a5a7a;
+    }
+    .task-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-left: 0.7rem;
+    }
+    .task-actions button {
+      width: auto;
+      padding: 0.4rem 0.7rem;
+      font-size: 0.95rem;
+      border-radius: 7px;
+      margin-bottom: 0;
+      box-shadow: none;
+    }
+    .complete-btn {
+      background: var(--verde);
+      color: var(--blanco);
+    }
+    .complete-btn:hover {
+      background: #2a8a00;
+    }
+    .delete-btn {
+      background: var(--rojo);
+      color: var(--blanco);
+    }
+    .delete-btn:hover {
+      background: #b93222;
+    }
+    /* Extra: CSS para status-btn */
+    .status-btn {
+      transition: background 0.2s, color 0.2s, opacity 0.2s;
+      outline: none;
+    }
+    .status-btn:focus {
+      outline: 2px solid #185adb;
+    }
+    /* Extra: CSS para priority-select */
+    .priority-select {
+      margin-top: 0.2rem;
+      border-radius: 7px;
+      border: 1.5px solid #185adb;
+      padding: 0.4rem 0.7rem;
+      font-size: 0.95rem;
+      color: #0a2342;
+      background: #e5e9f2;
+      font-weight: 600;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .priority-select:focus {
+      border: 2px solid #185adb;
+    }
+    @media (max-width: 500px) {
+      .container {
+        padding: 1.5rem 0.7rem 1.5rem 0.7rem;
+        max-width: 98vw;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      .task-title {
+        font-size: 0.98rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-
-    <!-- Contenedor para pedir el nombre -->
-    <div id="nameInputContainer">
-      <h1>¡Hola! ¿Cómo te llamas?</h1>
-      <input type="text" id="nameInput" placeholder="Escribe tu nombre..." />
-      <button id="startBtn">Comenzar</button>
+  <div class="container" id="mainContainer">
+    <h1>My Homework</h1>
+    <div id="registerSection">
+      <div class="welcome">¡Bienvenido! Ingresa tu nombre para comenzar a organizar tus tareas.</div>
+      <input type="text" id="userName" placeholder="Tu nombre..." autocomplete="off" />
+      <button id="startBtn">Vamos a agregar tus tareas</button>
     </div>
-
-    <!-- Contenedor principal de la app (oculto hasta que se ingrese el nombre) -->
-    <div id="taskAppContainer" class="hidden">
-      <div id="welcomeMsg"></div>
-
-      <input type="text" id="taskInput" placeholder="Nueva tarea..." />
-      <button id="addTaskBtn">Agregar Tarea</button>
-      <button id="calendarBtn" class="calendar-btn" onclick="window.location.href='calendario.html'">Calendario</button>
-
-      <ul id="taskList"></ul>
-
-      <!-- Calendario de tareas integrado -->
-      <div id="calendarSection" class="hidden">
-        <div class="calendar-container" id="calendarContainerIntegrated" style="margin-top:40px;">
-          <button class="back-btn" onclick="window.location.href='index.html#taskInput'">Volver a tareas</button>
-          <h1>Calendario de Tareas</h1>
-          <div id="calendarList" class="task-calendar-list"></div>
-        </div>
-        <button id="closeCalendarBtn" class="calendar-btn" style="margin-top:24px; background:#e74c3c;">Cerrar Calendario</button>
+    <div id="taskSection" style="display:none; width:100%;">
+      <div class="greeting" id="greetingMsg"></div>
+      <div class="task-section">
+        <form class="task-form" id="taskForm">
+          <input type="text" id="taskInput" placeholder="Nueva tarea..." required autocomplete="off" />
+          <input type="date" id="taskDate" required />
+          <button type="submit">Agregar tarea</button>
+          <button type="button" id="calendarBtn">Calendario</button>
+        </form>
+        <ul class="task-list" id="taskList"></ul>
       </div>
     </div>
-    
   </div>
-
+  <!-- Modal calendario -->
+  <div id="calendarModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(10,35,66,0.45);z-index:1000;align-items:center;justify-content:center;">
+    <div style="background:#fff;color:#0a2342;border-radius:18px;max-width:95vw;width:400px;padding:2rem 1.2rem;box-shadow:0 8px 32px rgba(10,35,66,0.18);position:relative;">
+      <button id="closeCalendar" style="position:absolute;top:0;right:0;width:44px;height:44px;background:none;border:none;font-size:2rem;color:#185adb;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;">&times;</button>
+      <h2 style="margin-top:0;text-align:center;color:#185adb;">Calendario de Tareas</h2>
+      <div id="calendarContent"></div>
+    </div>
+  </div>
   <script>
-    // Elementos DOM
-    const nameInputContainer = document.getElementById('nameInputContainer');
-    const nameInput = document.getElementById('nameInput');
+    // Registro y saludo
     const startBtn = document.getElementById('startBtn');
+    const userNameInput = document.getElementById('userName');
+    const registerSection = document.getElementById('registerSection');
+    const taskSection = document.getElementById('taskSection');
+    const greetingMsg = document.getElementById('greetingMsg');
 
-    const taskAppContainer = document.getElementById('taskAppContainer');
-    const welcomeMsg = document.getElementById('welcomeMsg');
-    const taskInput = document.getElementById('taskInput');
-    const addTaskBtn = document.getElementById('addTaskBtn');
-    const taskList = document.getElementById('taskList');
-    const calendarBtn = document.getElementById('calendarBtn');
-
-    const calendarSectionEl = document.getElementById('calendarSection');
-    const calendarTasks = document.getElementById('calendarTasks');
-    const closeCalendarBtn = document.getElementById('closeCalendarBtn');
-
+    let userName = '';
     let tasks = [];
 
-    // Cargar tareas desde LocalStorage
-    function loadTasks() {
-      const saved = localStorage.getItem('tasks');
-      if (saved) {
-        try {
-          tasks = JSON.parse(saved);
-        } catch {
-          tasks = [];
-        }
+    startBtn.addEventListener('click', () => {
+      const name = userNameInput.value.trim();
+      if (name.length === 0) {
+        userNameInput.focus();
+        userNameInput.style.border = "2px solid #e74c3c";
+        return;
+      }
+      userName = name;
+      registerSection.style.display = "none";
+      taskSection.style.display = "block";
+      greetingMsg.textContent = `¡Hola, ${name}! Aquí puedes gestionar tus tareas.`;
+      loadTasks();
+      renderTasks();
+    });
+
+    userNameInput.addEventListener('input', () => {
+      userNameInput.style.border = "1.5px solid var(--azul-medio)";
+    });
+
+    // Gestión de tareas
+    const taskForm = document.getElementById('taskForm');
+    const taskInput = document.getElementById('taskInput');
+    const taskDate = document.getElementById('taskDate');
+    const taskList = document.getElementById('taskList');
+
+    // Establecer fecha actual como valor inicial en el input de fecha
+    function setTodayAsDefaultDate() {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      taskDate.value = `${yyyy}-${mm}-${dd}`;
+    }
+    setTodayAsDefaultDate();
+
+    function saveTasks() {
+      if (userName) {
+        localStorage.setItem('tasks_' + userName, JSON.stringify(tasks));
       }
     }
-
-    // Guardar tareas en LocalStorage
-    function saveTasks() {
-      localStorage.setItem('tasks', JSON.stringify(tasks));
+    function loadTasks() {
+      if (userName) {
+        const saved = localStorage.getItem('tasks_' + userName);
+        tasks = saved ? JSON.parse(saved) : [];
+      }
     }
-
-    // Mostrar tareas en pantalla
     function renderTasks() {
       taskList.innerHTML = '';
-      tasks.forEach((task, index) => {
+      if (tasks.length === 0) {
+        taskList.innerHTML = '<li style="text-align:center;color:#888;">No tienes tareas aún.</li>';
+        return;
+      }
+      tasks.forEach((task, idx) => {
         const li = document.createElement('li');
-
-        const span = document.createElement('span');
-        if (typeof task === 'string') {
-          // Migración para tareas antiguas
-          task = { text: task, createdAt: null };
+        li.className = 'task-item' + (task.status === 'Completada' ? ' completed' : '');
+        const info = document.createElement('div');
+        info.className = 'task-info';
+        // Título editable
+        const title = document.createElement('input');
+        title.type = 'text';
+        title.className = 'task-title';
+        title.value = task.text;
+        title.readOnly = !task.editing;
+        title.style.background = task.editing ? '#fff' : 'transparent';
+        title.style.border = task.editing ? '1px solid #185adb' : 'none';
+        title.style.color = '#0a2342';
+        title.style.fontWeight = '500';
+        title.style.fontSize = '1rem';
+        title.style.marginBottom = '0.2rem';
+        // Fecha editable
+        const date = document.createElement('input');
+        date.type = 'date';
+        date.className = 'task-date';
+        date.value = task.date;
+        date.readOnly = !task.editing;
+        date.style.background = task.editing ? '#fff' : 'transparent';
+        date.style.border = task.editing ? '1px solid #185adb' : 'none';
+        date.style.color = '#4a5a7a';
+        date.style.fontSize = '0.9rem';
+        // Botón de estado
+        const statusBtn = document.createElement('button');
+        statusBtn.type = 'button';
+        statusBtn.className = 'status-btn';
+        statusBtn.textContent = (task.status === 'Completada') ? 'Completada' : 'En curso';
+        statusBtn.style.background = (task.status === 'Completada') ? '#3ec300' : '#ffd600';
+        statusBtn.style.color = (task.status === 'Completada') ? '#fff' : '#0a2342';
+        statusBtn.style.fontWeight = 'bold';
+        statusBtn.style.border = 'none';
+        statusBtn.style.borderRadius = '7px';
+        statusBtn.style.padding = '0.4rem 0.7rem';
+        statusBtn.style.marginBottom = '0.2rem';
+        statusBtn.style.cursor = 'pointer';
+        statusBtn.style.boxShadow = '0 2px 8px rgba(24,90,219,0.08)';
+        statusBtn.onmouseover = function() { statusBtn.style.opacity = '0.85'; };
+        statusBtn.onmouseout = function() { statusBtn.style.opacity = '1'; };
+        statusBtn.onclick = () => {
+          tasks[idx].status = (task.status === 'En curso') ? 'Completada' : 'En curso';
+          saveTasks();
+          renderTasks();
+        };
+        // Prioridad
+        const priority = document.createElement('select');
+        priority.className = 'priority-select';
+        const priorityColors = {
+          'Baja': {bg: '#b9fbc0', color: '#0a2342'}, // verde pastel
+          'Media': {bg: '#ffe5b4', color: '#0a2342'}, // naranja pastel
+          'Alta': {bg: '#ffb3b3', color: '#0a2342'}, // rojo pastel
+          'Urgente': {bg: '#222', color: '#fff'} // negro con blanco
+        };
+        ['Baja', 'Media', 'Alta', 'Urgente'].forEach(opt => {
+          const option = document.createElement('option');
+          option.value = opt;
+          option.textContent = 'Prioridad: ' + opt;
+          if ((task.priority || 'Media') === opt) option.selected = true;
+          option.style.background = priorityColors[opt].bg;
+          option.style.color = priorityColors[opt].color;
+          priority.appendChild(option);
+        });
+        // Aplica color al select según valor
+        function setPriorityColor() {
+          const val = priority.value;
+          priority.style.background = priorityColors[val].bg;
+          priority.style.color = priorityColors[val].color;
         }
-        span.textContent = task.text || task;
-        span.className = 'task-text';
-        li.appendChild(span);
-
-        // Fecha y hora elegante
-        const dateDiv = document.createElement('div');
-        if (task.createdAt) {
-          dateDiv.textContent = `🕒 ${task.createdAt}`;
-        }
-        dateDiv.className = 'task-date-elegant';
-        li.appendChild(dateDiv);
-
-        // Contenedor para los botones
+        setPriorityColor();
+        priority.disabled = !task.editing;
+        priority.addEventListener('change', () => {
+          tasks[idx].priority = priority.value;
+          saveTasks();
+          setPriorityColor();
+        });
+        // Guardar cambios al salir de edición
+        title.addEventListener('change', () => {
+          tasks[idx].text = title.value;
+          saveTasks();
+        });
+        date.addEventListener('change', () => {
+          tasks[idx].date = date.value;
+          saveTasks();
+        });
+        info.appendChild(title);
+        info.appendChild(date);
+        info.appendChild(statusBtn);
+        info.appendChild(priority);
+        li.appendChild(info);
         const actions = document.createElement('div');
         actions.className = 'task-actions';
-
+        // Botón editar/guardar
         const editBtn = document.createElement('button');
-        editBtn.textContent = 'Editar ';
-        editBtn.className = 'task-action-edit';
-        editBtn.onclick = () => editTask(index);
-        actions.appendChild(editBtn);
-
+        editBtn.className = 'edit-btn';
+        editBtn.textContent = task.editing ? 'Guardar' : 'Editar';
+        editBtn.onclick = () => {
+          if (task.editing) {
+            tasks[idx].editing = false;
+            tasks[idx].text = title.value;
+            tasks[idx].date = date.value;
+            tasks[idx].priority = priority.value;
+            saveTasks();
+          } else {
+            tasks.forEach(t => t.editing = false);
+            tasks[idx].editing = true;
+          }
+          renderTasks();
+        };
+        // Botón eliminar
         const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Eliminar ';
-        deleteBtn.className = 'task-action-delete';
-        deleteBtn.onclick = () => deleteTask(index);
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.textContent = 'Eliminar';
+        deleteBtn.onclick = () => {
+          tasks.splice(idx, 1);
+          saveTasks();
+          renderTasks();
+        };
+        actions.appendChild(editBtn);
         actions.appendChild(deleteBtn);
-
         li.appendChild(actions);
         taskList.appendChild(li);
       });
+    }
+    taskForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const text = taskInput.value.trim();
+      const date = taskDate.value;
+      if (!text || !date) return;
+      tasks.push({ text, date, status: 'En curso', editing: false, priority: 'Media' });
       saveTasks();
-    }
-
-    function showCustomAlert(message) {
-      const modal = document.createElement('div');
-      modal.className = 'custom-edit-modal';
-
-      const content = document.createElement('div');
-      content.className = 'custom-edit-content';
-
-      const label = document.createElement('label');
-      label.textContent = message;
-      label.style.fontWeight = 'bold';
-      content.appendChild(label);
-
-      const btns = document.createElement('div');
-      btns.style.display = 'flex';
-      btns.style.justifyContent = 'center';
-
-      const okBtn = document.createElement('button');
-      okBtn.textContent = 'Aceptar';
-      okBtn.onclick = () => document.body.removeChild(modal);
-      btns.appendChild(okBtn);
-
-      content.appendChild(btns);
-      modal.appendChild(content);
-      document.body.appendChild(modal);
-    }
-
-    function addTask() {
-      const taskText = taskInput.value.trim();
-      if (taskText === '') {
-        showCustomAlert('Por favor ingresa una tarea.');
-        return;
-      }
-      const now = new Date();
-      const createdAt = now.toLocaleString();
-      tasks.push({ text: taskText, createdAt });
-      taskInput.value = '';
       renderTasks();
-    }
-
-    function editTask(index) {
-      // Crear modal
-      const modal = document.createElement('div');
-      modal.className = 'custom-edit-modal';
-
-      const content = document.createElement('div');
-      content.className = 'custom-edit-content';
-
-      const label = document.createElement('label');
-      label.textContent = 'Editar tarea:';
-      label.style.fontWeight = 'bold';
-      content.appendChild(label);
-
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.value = tasks[index].text || tasks[index];
-      content.appendChild(input);
-
-      const btns = document.createElement('div');
-      btns.style.display = 'flex';
-      btns.style.gap = '10px';
-
-      const saveBtn = document.createElement('button');
-      saveBtn.textContent = 'Guardar';
-      saveBtn.onclick = () => {
-        const newTask = input.value.trim();
-        if (newTask) {
-          if (typeof tasks[index] === 'string') {
-            tasks[index] = { text: newTask, createdAt: null };
-          } else {
-            tasks[index].text = newTask;
-          }
-          renderTasks();
-        }
-        document.body.removeChild(modal);
-      };
-      btns.appendChild(saveBtn);
-
-      const cancelBtn = document.createElement('button');
-      cancelBtn.textContent = 'Cancelar';
-      cancelBtn.style.background = '#7f8c8d';
-      cancelBtn.onclick = () => document.body.removeChild(modal);
-      btns.appendChild(cancelBtn);
-
-      content.appendChild(btns);
-      modal.appendChild(content);
-      document.body.appendChild(modal);
-
-      input.focus();
-    }
-
-    function deleteTask(index) {
-      // Crear modal de confirmación personalizado
-      const modal = document.createElement('div');
-      modal.className = 'custom-edit-modal';
-
-      const content = document.createElement('div');
-      content.className = 'custom-edit-content';
-
-      const label = document.createElement('label');
-      label.textContent = '¿Seguro que quieres eliminar esta tarea?';
-      label.style.fontWeight = 'bold';
-      content.appendChild(label);
-
-      const btns = document.createElement('div');
-      btns.style.display = 'flex';
-      btns.style.gap = '10px';
-
-      const deleteBtn = document.createElement('button');
-      deleteBtn.textContent = 'Eliminar';
-      deleteBtn.style.background = '#e74c3c';
-      deleteBtn.onclick = () => {
-        tasks.splice(index, 1);
-        renderTasks();
-        document.body.removeChild(modal);
-      };
-      btns.appendChild(deleteBtn);
-
-      const cancelBtn = document.createElement('button');
-      cancelBtn.textContent = 'Cancelar';
-      cancelBtn.style.background = '#7f8c8d';
-      cancelBtn.onclick = () => document.body.removeChild(modal);
-      btns.appendChild(cancelBtn);
-
-      content.appendChild(btns);
-      modal.appendChild(content);
-      document.body.appendChild(modal);
-    }
-
-    // Evento para iniciar la app después de pedir nombre
-    startBtn.addEventListener('click', () => {
-      const name = nameInput.value.trim();
-      if (name === '') {
-        showCustomAlert('Por favor ingresa tu nombre para continuar.');
-        return;
-      }
-      // Ocultar input de nombre y mostrar app
-      nameInputContainer.classList.add('hidden');
-      taskAppContainer.classList.remove('hidden');
-
-      welcomeMsg.textContent = `¡Hola, ${name}! Aquí puedes gestionar tus tareas con calma y orden.`;
+      taskInput.value = '';
+      setTodayAsDefaultDate();
+      taskInput.focus();
     });
+    // Calendario
+    const calendarBtn = document.getElementById('calendarBtn');
+    const calendarModal = document.getElementById('calendarModal');
+    const closeCalendar = document.getElementById('closeCalendar');
+    const calendarContent = document.getElementById('calendarContent');
 
-    // Funcionalidad de tareas
-    addTaskBtn.addEventListener('click', addTask);
-    taskInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        addTask();
-      }
-    });
-
-    // --- Lógica de calendario integrada ---
-    function renderCalendarTasks() {
-      const calendarList = document.getElementById('calendarList');
-      if (!calendarList) return;
-      calendarList.innerHTML = '';
-      if (!tasks.length) {
-        calendarList.innerHTML = '<p style="text-align:center;color:#888;">No hay tareas registradas.</p>';
-        return;
-      }
-      tasks.forEach((task, idx) => {
-        const item = document.createElement('div');
-        item.className = 'task-calendar-item';
-        // Título
-        const title = document.createElement('div');
-        title.className = 'task-title';
-        title.textContent = task.text || task;
-        item.appendChild(title);
-        // Fecha de creación
-        const date = document.createElement('div');
-        date.className = 'task-date';
-        date.textContent = task.createdAt ? `Creada: ${task.createdAt}` : 'Sin fecha de creación';
-        item.appendChild(date);
-        // Rango de días editable
-        const calendarRow = document.createElement('div');
-        calendarRow.className = 'calendar-row';
-        const labelInicio = document.createElement('label');
-        labelInicio.textContent = 'Inicio:';
-        const inputInicio = document.createElement('input');
-        inputInicio.type = 'date';
-        // Si no hay rangeStart, usar la fecha de creación (formato yyyy-mm-dd)
-        let fechaCreacion = '';
-        if (task.createdAt) {
-          const d = new Date(task.createdAt);
-          if (!isNaN(d)) {
-            fechaCreacion = d.toISOString().slice(0, 10);
-          }
-        }
-        inputInicio.value = task.rangeStart || fechaCreacion;
-        inputInicio.onchange = (e) => {
-          tasks[idx].rangeStart = e.target.value;
-          saveTasks();
-          renderCalendarTasks();
-        };
-        const labelFin = document.createElement('label');
-        labelFin.textContent = 'Fin:';
-        const inputFin = document.createElement('input');
-        inputFin.type = 'date';
-        inputFin.value = task.rangeEnd || '';
-        inputFin.onchange = (e) => {
-          tasks[idx].rangeEnd = e.target.value;
-          saveTasks();
-          renderCalendarTasks();
-        };
-        calendarRow.appendChild(labelInicio);
-        calendarRow.appendChild(inputInicio);
-        calendarRow.appendChild(labelFin);
-        calendarRow.appendChild(inputFin);
-        item.appendChild(calendarRow);
-        calendarList.appendChild(item);
-      });
-    }
-    // Llama a renderCalendarTasks() cuando quieras mostrar el calendario integrado
-    // renderCalendarTasks();
-
-    // Renderizar tareas en el calendario
-    function renderCalendar() {
-      calendarTasks.innerHTML = '';
-      if (tasks.length === 0) {
-        calendarTasks.innerHTML = '<p style="text-align:center; color:#888;">No hay tareas para mostrar.</p>';
-        return;
-      }
-      tasks.forEach((task, idx) => {
-        const card = document.createElement('div');
-        card.style.background = '#f8fafc';
-        card.style.borderRadius = '10px';
-        card.style.boxShadow = '0 2px 8px #5dade220';
-        card.style.margin = '0 0 18px 0';
-        card.style.padding = '18px 18px 12px 18px';
-        card.style.position = 'relative';
-        card.style.transition = 'box-shadow 0.2s, transform 0.18s';
-        card.onmouseover = () => { card.style.boxShadow = '0 8px 24px #5dade2a0'; card.style.transform = 'scale(1.01)'; };
-        card.onmouseleave = () => { card.style.boxShadow = '0 2px 8px #5dade220'; card.style.transform = 'scale(1)'; };
-
-        const title = document.createElement('div');
-        title.textContent = task.text;
-        title.style.fontWeight = 'bold';
-        title.style.fontSize = '1.08rem';
-        title.style.color = '#34679b';
-        card.appendChild(title);
-
-        const created = document.createElement('div');
-        created.textContent = `Creada: ${task.createdAt || ''}`;
-        created.style.fontSize = '0.95rem';
-        created.style.color = '#5dade2';
-        created.style.margin = '6px 0 10px 0';
-        card.appendChild(created);
-
-        // Rango de fechas
-        const rangeDiv = document.createElement('div');
-        rangeDiv.style.display = 'flex';
-        rangeDiv.style.gap = '10px';
-        rangeDiv.style.alignItems = 'center';
-        rangeDiv.style.marginBottom = '8px';
-
-        const labelInicio = document.createElement('label');
-        labelInicio.textContent = 'Inicio:';
-        labelInicio.style.fontWeight = 'bold';
-        rangeDiv.appendChild(labelInicio);
-        const inputInicio = document.createElement('input');
-        inputInicio.type = 'date';
-        inputInicio.value = task.rangeStart || (task.createdAt ? formatDateForInput(task.createdAt) : '');
-        inputInicio.style.borderRadius = '6px';
-        inputInicio.style.border = '1.5px solid #a8c0cc';
-        inputInicio.style.padding = '4px 8px';
-        inputInicio.style.fontSize = '1rem';
-        rangeDiv.appendChild(inputInicio);
-
-        const labelFin = document.createElement('label');
-        labelFin.textContent = 'Fin:';
-        labelFin.style.fontWeight = 'bold';
-        rangeDiv.appendChild(labelFin);
-        const inputFin = document.createElement('input');
-        inputFin.type = 'date';
-        inputFin.value = task.rangeEnd || '';
-        inputFin.style.borderRadius = '6px';
-        inputFin.style.border = '1.5px solid #a8c0cc';
-        inputFin.style.padding = '4px 8px';
-        inputFin.style.fontSize = '1rem';
-        rangeDiv.appendChild(inputFin);
-
-        // Guardar cambios en el rango
-        inputInicio.onchange = () => {
-          task.rangeStart = inputInicio.value;
-          saveTasks();
-        };
-        inputFin.onchange = () => {
-          task.rangeEnd = inputFin.value;
-          saveTasks();
-        };
-
-        card.appendChild(rangeDiv);
-        calendarTasks.appendChild(card);
-      });
-    }
-
-    // Formatea fecha/hora local a yyyy-mm-dd para input date
-    function formatDateForInput(dateStr) {
-      const d = new Date(dateStr);
-      if (isNaN(d)) return '';
-      return d.toISOString().slice(0,10);
-    }
-
-    // Mostrar/ocultar calendario
     calendarBtn.addEventListener('click', () => {
-      calendarSectionEl.classList.remove('hidden');
-      taskAppContainer.classList.add('hidden');
       renderCalendar();
+      calendarModal.style.display = 'flex';
     });
-    closeCalendarBtn.addEventListener('click', () => {
-      calendarSectionEl.classList.add('hidden');
-      taskAppContainer.classList.remove('hidden');
+    closeCalendar.addEventListener('click', () => {
+      calendarModal.style.display = 'none';
+    });
+    window.addEventListener('click', (e) => {
+      if (e.target === calendarModal) calendarModal.style.display = 'none';
     });
 
-    // Al cargar la página, cargar tareas guardadas
-    loadTasks();
-    renderTasks();
+    function renderCalendar() {
+      if (!tasks.length) {
+        calendarContent.innerHTML = '<div style="text-align:center;color:#888;">No tienes tareas aún.</div>';
+        return;
+      }
+      calendarContent.innerHTML = tasks.map(task => `
+        <div style="background:${task.status==='Completada'?'#e6f9e6':'#f3f8ff'};border-radius:10px;padding:0.8rem 1rem;margin-bottom:1rem;box-shadow:0 2px 8px rgba(24,90,219,0.08);">
+          <div style="font-weight:600;font-size:1.08rem;">${task.text}</div>
+          <div style="font-size:0.97rem;color:#4a5a7a;">Fecha: ${task.date}</div>
+          <div style="font-size:0.97rem;">Estado: <span style="font-weight:600;color:${task.status==='Completada'?'#3ec300':'#ffd600'}">${task.status}</span></div>
+          <div style="font-size:0.97rem;">Prioridad: <span style="font-weight:600;${task.priority==='Baja'?'color:#0a2342;background:#b9fbc0;padding:2px 8px;border-radius:6px;':task.priority==='Media'?'color:#0a2342;background:#ffe5b4;padding:2px 8px;border-radius:6px;':task.priority==='Alta'?'color:#0a2342;background:#ffb3b3;padding:2px 8px;border-radius:6px;':'color:#fff;background:#222;padding:2px 8px;border-radius:6px;'}">${task.priority||'Media'}</span></div>
+        </div>
+      `).join('');
+    }
   </script>
 </body>
 </html>
