@@ -29,13 +29,14 @@
       background: var(--blanco);
       border-radius: 24px;
       box-shadow: 0 8px 32px rgba(10,35,66,0.18);
-      padding: 2.5rem 2rem 2rem 2rem;
-      max-width: 500px;
-      width: 100%;
+      padding: 2rem 1.2rem 1.5rem 1.2rem;
+      max-width: 420px;
+      width: 95vw;
       display: flex;
       flex-direction: column;
       align-items: center;
       transition: box-shadow 0.2s;
+      gap: 1.2rem;
     }
     h1 {
       margin-top: 0;
@@ -82,6 +83,7 @@
       box-shadow: var(--sombra);
       transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
       margin-bottom: 0.5rem;
+      text-align: center;
     }
     input[type="text"]:focus, input[type="date"]:focus {
       border: 2px solid var(--azul-oscuro);
@@ -99,6 +101,7 @@
       box-shadow: var(--sombra);
       transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
       margin-bottom: 0.5rem;
+      text-align: center;
     }
     button:hover {
       background: var(--azul-oscuro);
@@ -114,34 +117,39 @@
     }
     .task-section {
       width: 100%;
-      margin-top: 1.2rem;
+      margin-top: 0.7rem;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: stretch;
+      gap: 0.7rem;
     }
     .task-form {
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 0.7rem;
-      margin-bottom: 1.2rem;
+      gap: 0.5rem;
+      margin-bottom: 0.7rem;
     }
     .task-list {
       width: 100%;
       list-style: none;
       padding: 0;
       margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
     }
     .task-item {
       background: var(--azul-claro);
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(24,90,219,0.08);
-      margin-bottom: 0.7rem;
-      padding: 0.8rem 1rem;
+      padding: 0.7rem 0.8rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
       transition: box-shadow 0.2s;
+      gap: 0.7rem;
+      align-items: flex-start;
     }
     .task-item.completed {
       background: #e6f9e6;
@@ -152,11 +160,25 @@
       display: flex;
       flex-direction: column;
       gap: 0.2rem;
-      flex: 1;
+      flex: 1 1 0%;
+      min-width: 0;
+      max-width: 100%;
+      overflow: visible;
     }
     .task-title {
       font-size: 1rem;
       font-weight: 500;
+      /* Mostrar todo el texto, permitiendo saltos de línea y ajuste */
+      white-space: pre-line;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin-bottom: 0.2rem;
+      /* Eliminar el corte con puntos suspensivos */
+      text-overflow: unset;
     }
     .task-date {
       font-size: 0.9rem;
@@ -213,23 +235,74 @@
     .priority-select:focus {
       border: 2px solid #185adb;
     }
-    @media (max-width: 500px) {
-      .container {
-        padding: 1.5rem 0.7rem 1.5rem 0.7rem;
-        max-width: 98vw;
-      }
-      h1 {
-        font-size: 1.5rem;
-      }
-      .task-title {
-        font-size: 0.98rem;
+    /* Estilo para el select de categoría igual a los botones */
+    #taskCategory {
+      width: 100%;
+      padding: 0.9rem 0;
+      background: var(--azul-medio);
+      color: var(--blanco);
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--sombra);
+      transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+      margin-bottom: 0.5rem;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      text-align: center;
+    }
+    #taskCategory:hover {
+      background: var(--azul-oscuro);
+      box-shadow: 0 8px 32px rgba(24,90,219,0.22);
+      transform: translateY(-2px) scale(1.03);
+    }
+    #taskCategory:focus {
+      outline: 2px solid var(--azul-oscuro);
+    }
+    /* Colores personalizados para las opciones */
+    #taskCategory option[value="home"] {
+      background: #b9fbc0;
+      color: #0a2342;
+    }
+    #taskCategory option[value="work"] {
+      background: #ffe5b4;
+      color: #0a2342;
+    }
+    #taskCategory option[value="other"] {
+      background: #ffb3b3;
+      color: #0a2342;
+    }
+    /* Logo grande y centrado dentro del contenedor principal, tamaño original y responsivo */
+    .brand-logo {
+      position: static !important;
+      display: block;
+      margin: 0 auto 0 auto;
+      width: max-content;
+      height: max-content;
+      max-width: 80vw;
+      min-width: 80px;
+      object-fit: contain;
+      z-index: 2;
+      pointer-events: none;
+      user-select: none;
+      filter: drop-shadow(0 8px 32px rgba(10,35,66,0.18));
+      transition: width 0.2s;
+    }
+    @media (max-width: 600px) {
+      .brand-logo {
+        width: 180px;
+        min-width: 80px;
       }
     }
   </style>
 </head>
 <body>
   <div class="container" id="mainContainer">
-    <h1>My Homework</h1>
+    <!-- Logo grande y centrado en el lugar del título principal -->
+    <img src="logcasa.png" alt="Logo My Homework" class="brand-logo" id="mainLogo" style="position:static;display:block;margin:0 auto 1.5rem auto;width:320px;max-width:80vw;z-index:2;pointer-events:none;user-select:none;filter:drop-shadow(0 8px 32px rgba(10,35,66,0.18));" />
     <div id="registerSection">
       <div class="welcome">¡Bienvenido! Ingresa tu nombre para comenzar a organizar tus tareas.</div>
       <input type="text" id="userName" placeholder="Tu nombre..." autocomplete="off" />
@@ -241,21 +314,52 @@
         <form class="task-form" id="taskForm">
           <input type="text" id="taskInput" placeholder="Nueva tarea..." required autocomplete="off" />
           <input type="date" id="taskDate" required />
+          <select id="taskCategory" required style="margin-bottom:1.2rem;">
+            <option value="home">Home Tasks</option>
+            <option value="work">Work Tasks</option>
+            <option value="other">Other Tasks</option>
+          </select>
           <button type="submit">Agregar tarea</button>
           <button type="button" id="calendarBtn">Calendario</button>
+          <div class="excel-dropdown-container" style="position:relative;width:100%;">
+            <button type="button" id="downloadExcelBtn" style="margin-bottom:0.7rem;background:#21b573;position:relative;z-index:2;">Descargar Excel ▼</button>
+            <ul id="excelDropdown" style="display:none;position:absolute;top:100%;left:0;width:100%;background:#fff;border-radius:10px;box-shadow:0 4px 16px rgba(24,90,219,0.12);padding:0.3rem 0;margin:0;list-style:none;z-index:10;">
+              <li><button type="button" class="excel-option" data-type="all" style="width:100%;background:none;color:#0a2342;padding:0.7rem 0;text-align:left;border:none;font-size:1rem;cursor:pointer;">Descargar todo</button></li>
+              <li><button type="button" class="excel-option" data-type="home" style="width:100%;background:#b9fbc0;color:#0a2342;padding:0.7rem 0;text-align:left;border:none;font-size:1rem;cursor:pointer;">Descargar Home</button></li>
+              <li><button type="button" class="excel-option" data-type="work" style="width:100%;background:#ffe5b4;color:#0a2342;padding:0.7rem 0;text-align:left;border:none;font-size:1rem;cursor:pointer;">Descargar Work</button></li>
+              <li><button type="button" class="excel-option" data-type="other" style="width:100%;background:#ffb3b3;color:#0a2342;padding:0.7rem 0;text-align:left;border:none;font-size:1rem;cursor:pointer;">Descargar Other</button></li>
+            </ul>
+          </div>
         </form>
-        <ul class="task-list" id="taskList"></ul>
+        <div class="task-lists-container" style="display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;width:100%;">
+          <div class="task-list-section" style="flex:1 1 0;min-width:220px;max-width:100%;">
+            <h3 style="text-align:center;color:#185adb;margin-bottom:0.5rem;">Home Tasks</h3>
+            <ul class="task-list" id="homeTaskList"></ul>
+            <button type="button" id="downloadHomeBtn" style="background:#b9fbc0;color:#0a2342;margin-top:0.5rem;">Descargar Home</button>
+          </div>
+          <div class="task-list-section" style="flex:1 1 0;min-width:220px;max-width:100%;">
+            <h3 style="text-align:center;color:#185adb;margin-bottom:0.5rem;">Work Tasks</h3>
+            <ul class="task-list" id="workTaskList"></ul>
+            <button type="button" id="downloadWorkBtn" style="background:#ffe5b4;color:#0a2342;margin-top:0.5rem;">Descargar Work</button>
+          </div>
+          <div class="task-list-section" style="flex:1 1 0;min-width:220px;max-width:100%;">
+            <h3 style="text-align:center;color:#185adb;margin-bottom:0.5rem;">Other Tasks</h3>
+            <ul class="task-list" id="otherTaskList"></ul>
+            <button type="button" id="downloadOtherBtn" style="background:#ffb3b3;color:#0a2342;margin-top:0.5rem;">Descargar Other</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
   <!-- Modal calendario -->
   <div id="calendarModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(10,35,66,0.45);z-index:1000;align-items:center;justify-content:center;">
-    <div style="background:#fff;color:#0a2342;border-radius:18px;max-width:95vw;width:400px;padding:2rem 1.2rem;box-shadow:0 8px 32px rgba(10,35,66,0.18);position:relative;">
+    <div style="background:#fff;color:#0a2342;border-radius:18px;max-width:1200px;width:90vw;min-width:320px;padding:2.5rem 2rem;box-shadow:0 8px 32px rgba(10,35,66,0.18);position:relative;max-height:85vh;overflow:auto;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;">
       <button id="closeCalendar" style="position:absolute;top:0;right:0;width:44px;height:44px;background:none;border:none;font-size:2rem;color:#185adb;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;">&times;</button>
       <h2 style="margin-top:0;text-align:center;color:#185adb;">Calendario de Tareas</h2>
-      <div id="calendarContent"></div>
+      <div id="calendarContent" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;width:100%;"></div>
     </div>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script>
     // Registro y saludo
     const startBtn = document.getElementById('startBtn');
@@ -278,6 +382,8 @@
       registerSection.style.display = "none";
       taskSection.style.display = "block";
       greetingMsg.textContent = `¡Hola, ${name}! Aquí puedes gestionar tus tareas.`;
+      // Ocultar logo al pasar a la vista de tareas
+      document.getElementById('mainLogo').style.display = 'none';
       loadTasks();
       renderTasks();
     });
@@ -290,7 +396,10 @@
     const taskForm = document.getElementById('taskForm');
     const taskInput = document.getElementById('taskInput');
     const taskDate = document.getElementById('taskDate');
-    const taskList = document.getElementById('taskList');
+    const taskCategory = document.getElementById('taskCategory');
+    const homeTaskList = document.getElementById('homeTaskList');
+    const workTaskList = document.getElementById('workTaskList');
+    const otherTaskList = document.getElementById('otherTaskList');
 
     // Establecer fecha actual como valor inicial en el input de fecha
     function setTodayAsDefaultDate() {
@@ -314,9 +423,13 @@
       }
     }
     function renderTasks() {
-      taskList.innerHTML = '';
+      homeTaskList.innerHTML = '';
+      workTaskList.innerHTML = '';
+      otherTaskList.innerHTML = '';
       if (tasks.length === 0) {
-        taskList.innerHTML = '<li style="text-align:center;color:#888;">No tienes tareas aún.</li>';
+        homeTaskList.innerHTML = '<li style="text-align:center;color:#888;">No Home tasks yet.</li>';
+        workTaskList.innerHTML = '<li style="text-align:center;color:#888;">No Work tasks yet.</li>';
+        otherTaskList.innerHTML = '<li style="text-align:center;color:#888;">No Other tasks yet.</li>';
         return;
       }
       tasks.forEach((task, idx) => {
@@ -325,17 +438,25 @@
         const info = document.createElement('div');
         info.className = 'task-info';
         // Título editable
-        const title = document.createElement('input');
-        title.type = 'text';
-        title.className = 'task-title';
-        title.value = task.text;
-        title.readOnly = !task.editing;
-        title.style.background = task.editing ? '#fff' : 'transparent';
-        title.style.border = task.editing ? '1px solid #185adb' : 'none';
-        title.style.color = '#0a2342';
-        title.style.fontWeight = '500';
-        title.style.fontSize = '1rem';
-        title.style.marginBottom = '0.2rem';
+        let title;
+        if (task.editing) {
+          title = document.createElement('input');
+          title.type = 'text';
+          title.className = 'task-title';
+          title.value = task.text;
+          title.addEventListener('change', () => {
+            tasks[idx].text = title.value;
+            saveTasks();
+          });
+        } else {
+          title = document.createElement('div');
+          title.className = 'task-title';
+          // Permitir saltos de línea si el usuario los pone
+          title.textContent = task.text;
+          title.style.whiteSpace = 'pre-line';
+          title.style.overflowWrap = 'break-word';
+          title.style.wordBreak = 'break-word';
+        }
         // Fecha editable
         const date = document.createElement('input');
         date.type = 'date';
@@ -399,10 +520,6 @@
           setPriorityColor();
         });
         // Guardar cambios al salir de edición
-        title.addEventListener('change', () => {
-          tasks[idx].text = title.value;
-          saveTasks();
-        });
         date.addEventListener('change', () => {
           tasks[idx].date = date.value;
           saveTasks();
@@ -443,19 +560,27 @@
         actions.appendChild(editBtn);
         actions.appendChild(deleteBtn);
         li.appendChild(actions);
-        taskList.appendChild(li);
+        // Añadir a la lista correspondiente
+        if ((task.category || 'home') === 'home') homeTaskList.appendChild(li);
+        else if (task.category === 'work') workTaskList.appendChild(li);
+        else otherTaskList.appendChild(li);
       });
+      if (!homeTaskList.children.length) homeTaskList.innerHTML = '<li style="text-align:center;color:#888;">No Home tasks yet.</li>';
+      if (!workTaskList.children.length) workTaskList.innerHTML = '<li style="text-align:center;color:#888;">No Work tasks yet.</li>';
+      if (!otherTaskList.children.length) otherTaskList.innerHTML = '<li style="text-align:center;color:#888;">No Other tasks yet.</li>';
     }
     taskForm.addEventListener('submit', e => {
       e.preventDefault();
       const text = taskInput.value.trim();
       const date = taskDate.value;
-      if (!text || !date) return;
-      tasks.push({ text, date, status: 'En curso', editing: false, priority: 'Media' });
+      const category = taskCategory.value;
+      if (!text || !date || !category) return;
+      tasks.push({ text, date, status: 'En curso', editing: false, priority: 'Media', category });
       saveTasks();
       renderTasks();
       taskInput.value = '';
       setTodayAsDefaultDate();
+      taskCategory.value = 'home';
       taskInput.focus();
     });
     // Calendario
@@ -477,17 +602,113 @@
 
     function renderCalendar() {
       if (!tasks.length) {
-        calendarContent.innerHTML = '<div style="text-align:center;color:#888;">No tienes tareas aún.</div>';
+        calendarContent.innerHTML = '<div style="text-align:center;color:#888;grid-column:1/4;">No tienes tareas aún.</div>';
+        calendarContent.style.display = 'block';
         return;
       }
-      calendarContent.innerHTML = tasks.map(task => `
-        <div style="background:${task.status==='Completada'?'#e6f9e6':'#f3f8ff'};border-radius:10px;padding:0.8rem 1rem;margin-bottom:1rem;box-shadow:0 2px 8px rgba(24,90,219,0.08);">
-          <div style="font-weight:600;font-size:1.08rem;">${task.text}</div>
-          <div style="font-size:0.97rem;color:#4a5a7a;">Fecha: ${task.date}</div>
-          <div style="font-size:0.97rem;">Estado: <span style="font-weight:600;color:${task.status==='Completada'?'#3ec300':'#ffd600'}">${task.status}</span></div>
-          <div style="font-size:0.97rem;">Prioridad: <span style="font-weight:600;${task.priority==='Baja'?'color:#0a2342;background:#b9fbc0;padding:2px 8px;border-radius:6px;':task.priority==='Media'?'color:#0a2342;background:#ffe5b4;padding:2px 8px;border-radius:6px;':task.priority==='Alta'?'color:#0a2342;background:#ffb3b3;padding:2px 8px;border-radius:6px;':'color:#fff;background:#222;padding:2px 8px;border-radius:6px;'}">${task.priority||'Media'}</span></div>
-        </div>
-      `).join('');
+      calendarContent.style.display = 'grid';
+      calendarContent.style.gridTemplateColumns = 'repeat(3, 1fr)';
+      calendarContent.style.gap = '1.5rem';
+      // Separar tareas por categoría
+      const categories = {
+        home: [],
+        work: [],
+        other: []
+      };
+      tasks.forEach(task => {
+        const cat = task.category || 'home';
+        categories[cat].push(task);
+      });
+      const categoryLabels = {
+        home: 'Home',
+        work: 'Work',
+        other: 'Other'
+      };
+      const categoryColors = {
+        home: '#b9fbc0',
+        work: '#ffe5b4',
+        other: '#ffb3b3'
+      };
+      calendarContent.innerHTML = ['home','work','other'].map(cat =>
+        `<div style="display:flex;flex-direction:column;gap:1rem;min-width:0;">
+          <h3 style="text-align:center;color:#185adb;margin:0 0 0.7rem 0;">${categoryLabels[cat]}</h3>
+          ${categories[cat].length === 0 ? `<div style='text-align:center;color:#aaa;'>Sin tareas</div>` :
+            categories[cat].map(task => `
+              <div style="background:${task.status==='Completada'?'#e6f9e6':'#f3f8ff'};border-radius:10px;padding:0.8rem 1rem;box-shadow:0 2px 8px rgba(24,90,219,0.08);">
+                <div style="font-weight:600;font-size:1.08rem;white-space:pre-line;word-break:break-word;">${task.text}</div>
+                <div style="font-size:0.97rem;color:#4a5a7a;">Fecha: ${task.date}</div>
+                <div style="font-size:0.97rem;">Lista: <span style="font-weight:600;background:${categoryColors[cat]};color:#0a2342;padding:2px 8px;border-radius:6px;">${categoryLabels[cat]}</span></div>
+                <div style="font-size:0.97rem;">Estado: <span style="font-weight:600;color:${task.status==='Completada'?'#3ec300':'#ffd600'}">${task.status}</span></div>
+                <div style="font-size:0.97rem;">Prioridad: <span style="font-weight:600;${task.priority==='Baja'?'color:#0a2342;background:#b9fbc0;padding:2px 8px;border-radius:6px;':task.priority==='Media'?'color:#0a2342;background:#ffe5b4;padding:2px 8px;border-radius:6px;':task.priority==='Alta'?'color:#0a2342;background:#ffb3b3;padding:2px 8px;border-radius:6px;':'color:#fff;background:#222;padding:2px 8px;border-radius:6px;'}">${task.priority||'Media'}</span></div>
+              </div>
+            `).join('')
+          }
+        </div>`
+      ).join('');
+    }
+    // --- Excel Dropdown ---
+    const downloadExcelBtn = document.getElementById('downloadExcelBtn');
+    const excelDropdown = document.getElementById('excelDropdown');
+    let dropdownTimeout = null;
+    // Mostrar/ocultar menú al hacer click
+    downloadExcelBtn.addEventListener('click', (e) => {
+      if (excelDropdown.style.display === 'block') {
+        excelDropdown.style.display = 'none';
+      } else {
+        excelDropdown.style.display = 'block';
+      }
+    });
+    // Ocultar menú si se hace click fuera
+    document.addEventListener('click', (e) => {
+      if (!downloadExcelBtn.contains(e.target) && !excelDropdown.contains(e.target)) {
+        excelDropdown.style.display = 'none';
+      }
+    });
+    // Doble click para descargar todo
+    downloadExcelBtn.addEventListener('dblclick', () => {
+      descargarExcel('all');
+      excelDropdown.style.display = 'none';
+    });
+    // Opciones del menú
+    document.querySelectorAll('.excel-option').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const type = btn.getAttribute('data-type');
+        descargarExcel(type);
+        excelDropdown.style.display = 'none';
+      });
+    });
+    // Función para descargar Excel según tipo
+    function descargarExcel(type) {
+      if (type === 'all') {
+        // Descargar todas las tareas (3 hojas)
+        const categories = { home: [], work: [], other: [] };
+        tasks.forEach(t => {
+          const cat = t.category || 'home';
+          categories[cat].push({
+            Tarea: t.text,
+            Fecha: t.date,
+            Estado: t.status,
+            Prioridad: t.priority,
+          });
+        });
+        const wb = XLSX.utils.book_new();
+        Object.entries(categories).forEach(([cat, arr]) => {
+          const ws = XLSX.utils.json_to_sheet(arr.length ? arr : [{Tarea:'',Fecha:'',Estado:'',Prioridad:''}]);
+          XLSX.utils.book_append_sheet(wb, ws, cat.charAt(0).toUpperCase() + cat.slice(1));
+        });
+        XLSX.writeFile(wb, 'tareas.xlsx');
+      } else if (type === 'home' || type === 'work' || type === 'other') {
+        const filtered = tasks.filter(t => (t.category || 'home') === type).map(t => ({
+          Tarea: t.text,
+          Fecha: t.date,
+          Estado: t.status,
+          Prioridad: t.priority,
+        }));
+        const ws = XLSX.utils.json_to_sheet(filtered.length ? filtered : [{Tarea:'',Fecha:'',Estado:'',Prioridad:''}]);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, type.charAt(0).toUpperCase() + type.slice(1));
+        XLSX.writeFile(wb, `${type}_tasks.xlsx`);
+      }
     }
   </script>
 </body>
